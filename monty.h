@@ -42,42 +42,43 @@ typedef struct instruction_s
 extern stack_t *head;
 typedef void (*op_func)(stack_t **, unsigned int);
 
-/*file operations*/
-void open_file_func(char *file_name);
+/*file ops*/
 int parse_line_func(char *buffer, int line_number, int format);
-void read_file_func(FILE *);
+void open_file_func(char *file_name);
 int len_chars_func(FILE *);
 void find_func_func(char *, char *, int, int);
+void read_file_func(FILE *);
 
-/*Stack operations*/
+/*Stack ops*/
 stack_t *create_node(int n);
-void print_stack(stack_t **, unsigned int);
-void free_nodes(void);
-void add_to_queue_func(stack_t **, unsigned int);
+void print_stack_func(stack_t **, unsigned int);
 void add_to_stack_func(stack_t **, unsigned int);
+void add_to_queue_func(stack_t **, unsigned int);
+void free_nodes_func(void);
 
-void call_func(op_func, char *, char *, int, int);
-void print_top(stack_t **, unsigned int);
-void nop(stack_t **, unsigned int);
-void swap_nodes(stack_t **, unsigned int);
-void pop_top(stack_t **, unsigned int);
+void print_top_func(stack_t **, unsigned int);
 
-/*Math operations with nodes*/
-void add_nodes_func(stack_t **, unsigned int);
+void call_fun_func(op_func, char *, char *, int, int);
+void swap_nodes_func(stack_t **, unsigned int);
+void nop_func(stack_t **, unsigned int);
+void pop_top_func(stack_t **, unsigned int);
+
+/*Math ops for nodes*/
 void sub_nodes_func(stack_t **, unsigned int);
-void div_nodes_func(stack_t **, unsigned int);
-void mul_nodes_func(stack_t **, unsigned int);
+void add_nodes_func(stack_t **, unsigned int);
 void mod_nodes_func(stack_t **, unsigned int);
+void mull_nodes_func(stack_t **, unsigned int);
+void div_nodes_func(stack_t **, unsigned int);
 
-/*String operations*/
+/*String ops*/
+void print_string_func(stack_t **, unsigned int);
+void rotl(stack_t **, unsigned int);
 void print_char_func(stack_t **, unsigned int);
-void print_str_func(stack_t **, unsigned int);
-void rotl_func(stack_t **, unsigned int);
 
-/*Error hanlding*/
-void err_func(int error_code, ...);
+/*Error hanlding ops*/
 void more_err_func(int error_code, ...);
-void string_err_func(int error_code, ...);
-void rotr_func(stack_t **, unsigned int);
+void err(int error_code, ...);
+void rotr(stack_t **, unsigned int);
+void string_error_func(int error_code, ...);
 
 #endif

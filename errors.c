@@ -1,26 +1,25 @@
 #include "monty.h"
 
 /**
- * err - Prints appropriate error messages based on the given error code.
- * @error_code: The error codes and their meanings:
- * (1) => No file or more than one file provided to the program.
- * (2) => The specified file cannot be opened or read.
- * (3) => The file contains an invalid instruction.
- * (4) => Unable to allocate more memory (malloc failed).
- * (5) => The parameter passed to the "push" instruction is not an integer.
- * (6) => Stack is empty for "pint" operation.
- * (7) => Stack is empty for "pop" operation.
- * (8) => Stack is too short for the operation.
+ * err - Prints appropiate error messages determined by their error code.
+ * @error_code_func: The error codes are the following:
+ *(1) => The user does not give any file or more than one file to the program.
+ *(2) => The file provided is not a file that can be opened or read.
+ *(3) => The file provided contains an invalid instruction.
+ *(4) => When the program is unable to malloc more memory.
+ *(5) => When the parameter passed to the instruction "push" is not an int.
+ *(6) => When the stack is empty for "pint".
+ *(7) => When the stack is empty for "pop".
+ *(8) => When the stack is too short for operation.
  */
-
-void err_func(int error_err_code, ...)
+void err(int error_code, ...)
 {
 	va_list ag;
-	char *op_p;
-	int l_num_int;
+	char *op;
+	int l_num;
 
-	va_start(ag, error_err_code);
-	switch (error_err_code)
+	va_start(ag, error_code);
+	switch (error_code)
 	{
 		case 1:
 			fprintf(stderr, "USAGE: monty file\n");
@@ -30,9 +29,9 @@ void err_func(int error_err_code, ...)
 				va_arg(ag, char *));
 			break;
 		case 3:
-			l_num_int = va_arg(ag, int);
-			op_p = va_arg(ag, char *);
-			fprintf(stderr, "L%d: unknown instruction %s\n", l_num_int, op_p);
+			l_num = va_arg(ag, int);
+			op = va_arg(ag, char *);
+			fprintf(stderr, "L%d: unknown instruction %s\n", l_num, op);
 			break;
 		case 4:
 			fprintf(stderr, "Error: malloc failed\n");
@@ -43,26 +42,26 @@ void err_func(int error_err_code, ...)
 		default:
 			break;
 	}
-	free_nodes();
+	free_nodes_func();
 	exit(EXIT_FAILURE);
 }
 
 /**
- * more_err - Manages error cases.
- * @error_err_code: The error codes and their meanings:
- *   (6) => Stack is empty for "pint" operation.
- *   (7) => Stack is empty for "pop" operation.
- *   (8) => Stack is too short for the operation.
- *   (9) => Division by zero.
+ * more_err_func - handles errors.
+ * @error_code: The error codes are the following:
+ * (6) => When the stack it empty for pint.
+ * (7) => When the stack it empty for pop.
+ * (8) => When stack is too short for operation.
+ * (9) => Division by zero.
  */
-void more_err_func(int error_err_code, ...)
+void more_err_func(int error_code, ...)
 {
 	va_list ag;
-	char *op_p;
-	int l_num_int;
+	char *op;
+	int l_num;
 
-	va_start(ag, error_err_code);
-	switch (error_err_code)
+	va_start(ag, error_code);
+	switch (error_code)
 	{
 		case 6:
 			fprintf(stderr, "L%d: can't pint, stack empty\n",
@@ -73,9 +72,9 @@ void more_err_func(int error_err_code, ...)
 				va_arg(ag, int));
 			break;
 		case 8:
-			l_num_int = va_arg(ag, unsigned int);
-			op_p = va_arg(ag, char *);
-			fprintf(stderr, "L%d: can't %s, stack too short\n", l_num_int, op_p);
+			l_num = va_arg(ag, unsigned int);
+			op = va_arg(ag, char *);
+			fprintf(stderr, "L%d: can't %s, stack too short\n", l_num, op);
 			break;
 		case 9:
 			fprintf(stderr, "L%d: division by zero\n",
@@ -84,24 +83,24 @@ void more_err_func(int error_err_code, ...)
 		default:
 			break;
 	}
-	free_nodes();
+	free_nodes_func();
 	exit(EXIT_FAILURE);
 }
 
 /**
- * string_err - Manages error cases.
- * @error_err_code: The error codes and their meanings:
- *   (10) => The number inside a node is outside ASCII bounds.
- *   (11) => The stack is empty.
+ * string_error_func - handles errors.
+ * @error_code_func: The error codes are the following:
+ * (10) ~> The number inside a node is outside ASCII bounds.
+ * (11) ~> The stack is empty.
  */
-void string_err_func(int error_err_code, ...)
+void string_error_func(int error_code, ...)
 {
 	va_list ag;
 	int l_num;
 
-	va_start(ag, error_err_code);
+	va_start(ag, error_code);
 	l_num = va_arg(ag, int);
-	switch (error_err_code)
+	switch (error_code)
 	{
 		case 10:
 			fprintf(stderr, "L%d: can't pchar, value out of range\n", l_num);
@@ -112,6 +111,6 @@ void string_err_func(int error_err_code, ...)
 		default:
 			break;
 	}
-	free_nodes();
+	free_nodes_func();
 	exit(EXIT_FAILURE);
 }
