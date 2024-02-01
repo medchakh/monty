@@ -1,111 +1,85 @@
 #include "monty.h"
 
-/**
- * exec - Execute an opcode.
- * Return: None.
- */
-void exec(void)
-{
-    instruction_t ins[] = {
-        {"push", _push},
-        {"pall", _pall},
-        {"pint", _pint},
-        {"pop", _pop},
-        {"swap", _swap},
-        {"add", _add},
-        {"nop", _nop},
-        {"sub", _sub},
-        {"div", _div},
-        {"mul", _mul},
-        {"mod", _mod},
-        {"pchar", _pchar},
-        {"pstr", _pstr},
-        {"rotl", _rotl},
-        {"rotr", _rotr},
-        {"queue", _mode},
-        {"stack", _mode},
-        {NULL, NULL},
-    };
-    int j = 0;
+stack_t *head = NULL;
 
-    for (j = 0; ins[j].opcode; j++)
-    {
-        if (strcmp(datax.opcode, ins[j].opcode) == 0)
-        {
-            ins[j].f(&datax.top, datax.line_num);
-            break;
-        }
-    }
-    if (!ins[j].opcode)
-    {
-        fprintf(stderr, "L%d: unknown instruction %s\n", datax.line_num, datax.opcode);
-        free_stack(datax.top);
-        exit(EXIT_FAILURE);
-    }
+/**
+ * main - Entry point
+ * @argc: Arguments count
+ * @argv: List of arguments
+ * Return: Always 0
+ */
+int main(int argc, char *argv[])
+{
+	if (argc != 2)
+	{
+		fprintf(stderr, "USAGE: monty file\n");
+		exit(EXIT_FAILURE);
+	}
+
+	open_file(argv[1]);
+	free_nodes();
+	return (0);
 }
 
 /**
- * remove_spaces - Remove leading spaces from a string.
- * @str: Input string.
- * Return: Pointer to the new string.
+ * create_node - Creates a new node.
+ * @n: Number to be stored in the node.
+ * Return: Upon success, returns a pointer to the new node. Otherwise, returns NULL.
  */
-char *remove_spaces(char *str)
+stack_t *create_node(int n)
 {
-    while (*str)
-    {
-        if (*str == ' ')
-            str++;
-        else
-            break;
-    }
-    return str;
+	stack_t *node;
+
+	node = malloc(sizeof(stack_t));
+	if (node == NULL)
+		err(4);
+
+	node->next = NULL;
+	node->prev = NULL;
+	node->n = n;
+	return (node);
 }
 
 /**
- * main - Main function.
- * @argc: Number of command-line arguments.
- * @argv: Array of command-line arguments.
- * Return: EXIT_SUCCESS on success, EXIT_FAILURE on failure.
+ * free_nodes - Frees all nodes in the stack.
  */
-int main(int argc, char **argv)
+void free_nodes(void)
 {
-    char line[100], *token;
-    int i = 0;
+	stack_t *tmp;
 
-    datax.mode = 0;
-    if (argc != 2)
-    {
-        fprintf(stderr, "USAGE: monty file\n");
-        exit(EXIT_FAILURE);
-    }
-    datax.mfile = open_file(argv[1]);
-    while (fgets(line, sizeof(line), datax.mfile) != NULL)
-    {
-        if (strlen(remove_spaces(line)) < 3 || remove_spaces(line)[0] == '#')
-        {
-            datax.line_num++;
-            continue;
-        }
-        datax.line_num++;
-        token = strtok(line, " \n");
-        for (i = 0; token != NULL && i < 2; i++)
-        {
-            if (i == 0)
-                datax.opcode = token;
-            if (strcmp(datax.opcode, "push") != 0)
-                break;
-            if (i == 1)
-                verify_number(token);
-            token = strtok(NULL, " \n");
-        }
-        if (strcmp(datax.opcode, "push") == 0 && i == 1)
-        {
-            fprintf(stderr, "L%d: usage: push integer\n", datax.line_num);
-            free_stack(datax.top);
-            exit(EXIT_FAILURE);
-        }
-        exec();
-    }
-    free_stack(datax.top);
-    exit(EXIT_SUCCESS);
+	if (head == NULL)
+		return;
+
+	while (head != NULL)
+	{
+		tmp = head;
+		head = head->next;
+		free(tmp);
+	}
+}
+
+/**
+ * add_to_queue_func - Adds a new node to the queue.
+ * @new_node: Pointer to the new node.
+ * @ln: Line number of the opcode.
+ */
+void add_to_queue_func(stack_t **new_node, __attribute__((unused))unsigned int ln)
+{
+	stack_t *tmp;
+
+	if (new_node == NULL || *new_node == NULL)
+		exit(EXIT_FAILURE);
+
+	if (head == NULL)
+	{
+		head = *new_node;
+		return;
+	}
+
+	tmp = head;
+	while (tmp->next != NULL)
+		tmp = tmp->next;
+
+	tmp->next = *new_node;
+	(*new_node)->prev = tmp;
 }
