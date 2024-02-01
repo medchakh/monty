@@ -8,22 +8,19 @@
  */
 void add_to_stack_func(stack_t **new_node, __attribute__((unused))unsigned int lng)
 {
-	stack_t *tmp;
-
-	if (new_node == NULL || *new_node == NULL)
-		exit(EXIT_FAILURE);
-	if (head == NULL)
-	{
-		head = *new_node;
-		return;
-	}
-	tmp = head;
-	head = *new_node;
-	head->next = tmp;
-	tmp->prev = head;
+stack_t *tmp;
+if (new_node == NULL || *new_node == NULL)
+exit(EXIT_FAILURE);
+if (head == NULL)
+{
+head = *new_node;
+return;
 }
-
-
+tmp = head;
+head = *new_node;
+head->next = tmp;
+tmp->prev = head;
+}
 /**
  * print_stack_func - Adds a node to the stack.
  * @stack: Pointer to a pointer pointing to top node of the stack.
@@ -31,19 +28,17 @@ void add_to_stack_func(stack_t **new_node, __attribute__((unused))unsigned int l
  */
 void print_stack_func(stack_t **stack, unsigned int line_number)
 {
-	stack_t *tmp;
-
-	(void) line_number;
-	if (stack == NULL)
-		exit(EXIT_FAILURE);
-	tmp = *stack;
-	while (tmp != NULL)
-	{
-		printf("%d\n", tmp->n);
-		tmp = tmp->next;
-	}
+stack_t *tmp;
+(void) line_number;
+if (stack == NULL)
+exit(EXIT_FAILURE);
+tmp = *stack;
+while (tmp != NULL)
+{
+printf("%d\n", tmp->n);
+tmp = tmp->next;
 }
-
+}
 /**
  * pop_top_func - Adds a node to the stack.
  * @stack: Pointer to a pointer pointing to top node of the stack.
@@ -51,18 +46,15 @@ void print_stack_func(stack_t **stack, unsigned int line_number)
  */
 void pop_top_func(stack_t **stack, unsigned int line_number)
 {
-	stack_t *tmp;
-
-	if (stack == NULL || *stack == NULL)
-		more_err_func(7, line_number);
-
-	tmp = *stack;
-	*stack = tmp->next;
-	if (*stack != NULL)
-		(*stack)->prev = NULL;
-	free(tmp);
+stack_t *tmp;
+if (stack == NULL || *stack == NULL)
+more_err_func(7, line_number);
+tmp = *stack;
+*stack = tmp->next;
+if (*stack != NULL)
+(*stack)->prev = NULL;
+free(tmp);
 }
-
 /**
  * print_top_func - Prints the top node of the stack.
  * @stack: Pointer to a pointer pointing to top node of the stack.
@@ -70,7 +62,7 @@ void pop_top_func(stack_t **stack, unsigned int line_number)
  */
 void print_top_func(stack_t **stack, unsigned int line_number)
 {
-	if (stack == NULL || *stack == NULL)
-		more_err_func(6, line_number);
-	printf("%d\n", (*stack)->n);
+if (stack == NULL || *stack == NULL)
+more_err_func(6, line_number);
+printf("%d\n", (*stack)->n);
 }
