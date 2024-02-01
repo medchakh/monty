@@ -1,0 +1,1 @@
+ALX - 0x19. C - Stacks, Queues - LIFO, FIFO. task by ABDESSAMAD MOURGH & MOHAMED CHAKHMAN
